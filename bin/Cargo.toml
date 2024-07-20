@@ -10,4 +10,4 @@ description = "PPC Rlwinm/Rlwnm/Rlwimi Decoder Tool (CLI)"
 rust-version = "1.58"
 
 [dependencies]
-rlwinmdec = { path = "../lib", version = "1.0.0" }
+rlwinmdec = { path = "../lib", version = "1.0.1" }

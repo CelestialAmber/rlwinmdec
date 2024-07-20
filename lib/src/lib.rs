@@ -130,11 +130,13 @@ pub fn decode(instruction : &str) -> Option<String> {
 		if instruction_type == InstructionType::Rlwinm || instruction_type == InstructionType::Rlwimi {
 			for (i, part) in parts.iter().enumerate().take(5).skip(2) {
 				let num_string = part.as_str();
-				let val = num_string.parse::<u32>().unwrap();
-
-				if i == 2 { shift_amount = val; }
-				else if i == 3 { bitmask_start = val; }
-				else if i == 4 { bitmask_end = val; }
+				if let Ok(val) = num_string.parse::<u32>() {
+					if i == 2 { shift_amount = val; }
+					else if i == 3 { bitmask_start = val; }
+					else if i == 4 { bitmask_end = val; }
+				}else{
+					return None;
+				}
 			}
 		}else if instruction_type == InstructionType::Rlwnm {
 			rshift_amount = parts[2].as_str();
@@ -142,12 +144,21 @@ pub fn decode(instruction : &str) -> Option<String> {
 				return None;
 			}
 
-			bitmask_start = parts[3].parse::<u32>().unwrap();
-			bitmask_end = parts[4].parse::<u32>().unwrap();
+			bitmask_start = match parts[3].parse::<u32>() {
+				Ok(num) => num,
+				Err(_e) => { return None; }
+			};
+			bitmask_end = match parts[4].parse::<u32>() {
+				Ok(num) => num,
+				Err(_e) => { return None; }
+			};
 		} else if instruction_type == InstructionType::Rotlwi || instruction_type == InstructionType::Rotrwi || instruction_type == InstructionType::Slwi || instruction_type == InstructionType::Srwi || instruction_type == InstructionType::Clrlwi || instruction_type == InstructionType::Clrrwi {
 		   //rlwinm/rlwimi mnemonics w/ 3 arguments
 			let num_string = &parts[2];
-			let val = num_string.parse::<u32>().unwrap();
+			let val = match num_string.parse::<u32>() {
+				Ok(num) => num,
+				Err(_e) => { return None; }
+			};
 
 			if instruction_type == InstructionType::Rotlwi{
 				bitmask_start = 0;
@@ -178,8 +189,14 @@ pub fn decode(instruction : &str) -> Option<String> {
 			//rlwinm/rlwimi mnmemonics w/ 4 arguments
 			let num_string1 = &parts[2];
 			let num_string2 = &parts[3];
-			let val1: u32 = num_string1.parse::<u32>().unwrap();
-			let val2: u32 = num_string2.parse::<u32>().unwrap();
+			let val1: u32 = match num_string1.parse::<u32>() {
+				Ok(num) => num,
+				Err(_e) => { return None; }
+			};
+			let val2: u32 = match num_string2.parse::<u32>() {
+				Ok(num) => num,
+				Err(_e) => { return None; }
+			};
 
 			if instruction_type == InstructionType::Extlwi { //rlwinm mnemonics
 				bitmask_start = 0;
@@ -341,7 +358,10 @@ fn check_if_valid_reg_string(s: &str) -> bool {
 		return false;
 	}
 
-	let result = s[1..].parse::<i32>().unwrap();
+	let result = match s[1..].parse::<i32>() {
+		Ok(num) => num,
+		Err(_e) => { return false; }
+	};
 	if !(0..=31).contains(&result) {
 		return false;
 	}
