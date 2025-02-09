@@ -247,7 +247,7 @@ pub fn decode(instruction : &str) -> Option<String> {
 		} else if shift_amount == 0 {
 			result += format!("{} = {} & {:#X};\n", r_dest, r_source, bitmask).as_str();
 			result += "Could also be:\n";
-			result += format!("{} = {} & {:#X};\n", r_dest, r_source, !bitmask).as_str();
+			result += format!("{} = {} & ~{:#X};\n", r_dest, r_source, !bitmask).as_str();
 		} else {
 		  /* mwcc sometimes does an optimization where n*2^m will become rlwinm, where the zero bits are ensured to be 0
 		  through anding with a bitmask (for example, n*4 becomes n<<2 & ~0x3, clearing the lower bits */
@@ -263,7 +263,7 @@ pub fn decode(instruction : &str) -> Option<String> {
 		  }else{
 			result += format!("{} = ({} << {}) & {:#X};\n", r_dest, r_source, shift_amount, bitmask).as_str();
 			result += "Could also be:\n";
-			result += format!("{} = ({} << {}) & {:#X};\n", r_dest, r_source, shift_amount, !bitmask).as_str();
+			result += format!("{} = ({} << {}) & ~{:#X};\n", r_dest, r_source, shift_amount, !bitmask).as_str();
 			//right shift then and is sometimes optimized into rlwinm
 			result += format!("{} = ({} >> {}) & {:#X};\n", r_dest, r_source, (32 - shift_amount), bitmask).as_str();
 			//result += format!(r_dest + " = (rotl(" + r_source + ", " + shift_amount + ")) & 0x" + NumberToHexString(bitmask) + ";").as_str();
