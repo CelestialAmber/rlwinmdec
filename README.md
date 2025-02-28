@@ -1,6 +1,6 @@
 # rlwinmdec [![Latest Version]][crates.io] [![Api Rustdoc]][rustdoc] ![Rust Version]
 
-[Latest Version]: https://img.shields.io/rlwinmdec/v/rlwinmdec.svg
+[Latest Version]: https://img.shields.io/crates/v/rlwinmdec.svg
 [crates.io]: https://crates.io/crates/rlwinmdec
 [Api Rustdoc]: https://img.shields.io/badge/api-rustdoc-blue.svg
 [rustdoc]: https://docs.rs/rlwinmdec
