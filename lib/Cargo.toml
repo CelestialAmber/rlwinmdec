@@ -1,13 +1,14 @@
 [package]
 name = "rlwinmdec"
-version = "1.0.1"
+version = "1.1.0"
 edition = "2021"
 authors = ["Amber Brault <celestialamber1@gmail.com>"]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/Celestialamber/rlwinmdec"
 readme = "../README.md"
 description = "PPC Rlwinm/Rlwnm/Rlwimi Decoder Tool"
-rust-version = "1.58"
+rust-version = "1.81"
+categories = ["no-std"]
 
 [dependencies]
-anyhow = "1.0.86"
+anyhow = { version = "1.0", default-features = false }
